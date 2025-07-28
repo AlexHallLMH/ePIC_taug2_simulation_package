@@ -1,28 +1,77 @@
-Setup:
-Clone the repositery: 
-Switch to csh by running: csh
+# GRAPE-Tauola Simulation Setup
 
-NB: all comands should be run from within the main directory
+## Setup Instructions
 
+### 1. Clone the Repository
 
-Step 1 (compile the programs):
+```bash
+git clone <repository-url>
+cd <repository-directory>
+```
+
+**Note:** All commands below should be run from within the main directory of the repository.
+
+---
+
+### 2. Switch to C Shell
+
+```bash
+csh
+```
+
+---
+
+## Step 1: Compile the Programs
+
+### Build GRAPE
+
+```bash
 chmod +x build.sh
 ./build.sh
+```
 
-The files to run Grape will now be found in /grape-dilepton/build
+- GRAPE executables will be located in:
+  ```
+  ./grape-dilepton/build
+  ```
 
+### Build HEPMC3 and TAUOLA
+
+```bash
 chmod +x build_hep.sh
-This builds hep and tauola (can be slow, but only necessary once)
+./build_hep.sh
+```
 
+- This step may take some time but only needs to be done once.
 
-Step 2 (run Grape):
-Change parameters in the grape.cards file
+---
+
+## Step 2: Run GRAPE
+
+1. Edit the `grape.cards` file to configure run parameters.
+
+2. Run GRAPE:
+
+```bash
 chmod +x run_grape.sh
 ./run_grape.sh
+```
 
+---
 
-Step 3 (run tauola):
+## Step 3: Run TAUOLA
+
+```bash
 chmod +x run_tauola.sh
 ./run_tauola.sh
+```
 
-Output will be printed to terminal, with part-processed files found in grape/build
+---
+
+## Output
+
+- Output is printed to the terminal.
+- Partially processed files will be found in:
+  ```
+  ./grape/build
+  ```
