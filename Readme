@@ -1,0 +1,28 @@
+Setup:
+Clone the repositery: 
+Switch to csh by running: csh
+
+NB: all comands should be run from within the main directory
+
+
+Step 1 (compile the programs):
+chmod +x build.sh
+./build.sh
+
+The files to run Grape will now be found in /grape-dilepton/build
+
+chmod +x build_hep.sh
+This builds hep and tauola (can be slow, but only necessary once)
+
+
+Step 2 (run Grape):
+Change parameters in the grape.cards file
+chmod +x run_grape.sh
+./run_grape.sh
+
+
+Step 3 (run tauola):
+chmod +x run_tauola.sh
+./run_tauola.sh
+
+Output will be printed to terminal, with part-processed files found in grape/build
