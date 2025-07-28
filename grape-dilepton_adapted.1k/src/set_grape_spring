@@ -1,0 +1,21 @@
+# --- for SunOS ---
+setenv  F77      gfortran
+setenv  FFLAGS  '-O -g -fno-automatic -ffixed-line-length-132 -std=legacy '
+setenv  gplpl g++
+
+#(Path to CERNLIB)
+setenv  USRLDIR    "-L/network/software/el9/cernlib/2006a/new/lib -L/home/lady6801/Documents/new/HepMC3-3.2.6/build/outputs/lib64"
+
+setenv  SYSLIB     " -L/home/lady6801/Documents/new/p6152"
+#(The following options might be needed for SunOS.)
+#setenv  SYSLIB     "-lnsl -lm -lc"
+
+setenv  USRLIB     "${SYSLIB} -lkernlib -lpdflib804 -lmathlib -lpacklib -lpythia6152 -lkernlib"
+
+#=======================================
+setenv  GRACELDIR  "../lib"
+
+#=======================================
+source ./set_grape.usrobj
+
+#(EOF)

@@ -1,0 +1,177 @@
+ 
+C*********************************************************************
+ 
+C...PYTBDY
+C...Generates 3-body decays of gauginos.
+ 
+      SUBROUTINE PYTBDY(XM)
+ 
+C...Double precision and integer declarations.
+      IMPLICIT DOUBLE PRECISION(A-H, O-Z)
+      IMPLICIT INTEGER(I-N)
+      INTEGER PYK,PYCHGE,PYCOMP
+C...Parameter statement to help give large particle numbers.
+      PARAMETER (KSUSY1=1000000,KSUSY2=2000000,KEXCIT=4000000)
+C...Commonblocks.
+      COMMON/PYJETS/N,NPAD,K(4000,5),P(4000,5),V(4000,5)
+      COMMON/PYDAT1/MSTU(200),PARU(200),MSTJ(200),PARJ(200)
+      COMMON/PYDAT2/KCHG(500,4),PMAS(500,4),PARF(2000),VCKM(4,4)
+      COMMON/PYDAT3/MDCY(500,3),MDME(4000,2),BRAT(4000),KFDP(4000,5)
+      COMMON/PYPARS/MSTP(200),PARP(200),MSTI(200),PARI(200)
+      SAVE /PYJETS/,/PYDAT1/,/PYDAT2/,/PYDAT3/,/PYPARS/
+ 
+C...Local variables.
+      DOUBLE PRECISION XM(5)
+      DOUBLE PRECISION S12MIN,S12MAX,YJACO1,S23AVE,S23DF1,S23DF2
+      DOUBLE PRECISION D1,D2,D3,P1,P2,P3,CTHE1,STHE1,CTHE3,STHE3
+      DOUBLE PRECISION CPHI1,SPHI1
+      DOUBLE PRECISION S23DEL,EPS
+      DOUBLE PRECISION GOLDEN,AX,BX,CX,TOL,XMIN,R,C
+      PARAMETER (R=0.61803399D0,C=1D0-R,TOL=1D-3)
+      DOUBLE PRECISION F1,F2,X0,X1,X2,X3
+      DATA EPS/1D-6/
+ 
+C...GENERATE S12
+      S12MIN=(XM(1)+XM(2))**2
+      S12MAX=(XM(5)-XM(3))**2
+      YJACO1=S12MAX-S12MIN
+ 
+C...FIND S12*
+      AX=S12MIN
+      CX=S12MAX
+      BX=S12MIN+0.5D0*YJACO1
+      X0=AX
+      X3=CX
+      IF(ABS(CX-BX).GT.ABS(BX-AX))THEN
+        X1=BX
+        X2=BX+C*(CX-BX)
+      ELSE
+        X2=BX
+        X1=BX-C*(BX-AX)
+      ENDIF
+ 
+C...SOLVE FOR F1 AND F2
+      S23DF1=(X1-XM(2)**2-XM(1)**2)**2
+     &-(2D0*XM(1)*XM(2))**2
+      S23DF2=(X1-XM(3)**2-XM(5)**2)**2
+     &-(2D0*XM(3)*XM(5))**2
+      S23DF1=S23DF1*EPS
+      S23DF2=S23DF2*EPS
+      S23DEL=SQRT(S23DF1*S23DF2)/(2D0*X1)
+      F1=-2D0*S23DEL/EPS
+      S23DF1=(X2-XM(2)**2-XM(1)**2)**2
+     &-(2D0*XM(1)*XM(2))**2
+      S23DF2=(X2-XM(3)**2-XM(5)**2)**2
+     &-(2D0*XM(3)*XM(5))**2
+      S23DF1=S23DF1*EPS
+      S23DF2=S23DF2*EPS
+      S23DEL=SQRT(S23DF1*S23DF2)/(2D0*X2)
+      F2=-2D0*S23DEL/EPS
+ 
+  100 IF(ABS(X3-X0).GT.TOL*(ABS(X1)+ABS(X2)))THEN
+        IF(F2.LT.F1)THEN
+          X0=X1
+          X1=X2
+          X2=R*X1+C*X3
+          F1=F2
+          S23DF1=(X2-XM(2)**2-XM(1)**2)**2
+     &    -(2D0*XM(1)*XM(2))**2
+          S23DF2=(X2-XM(3)**2-XM(5)**2)**2
+     &    -(2D0*XM(3)*XM(5))**2
+          S23DF1=S23DF1*EPS
+          S23DF2=S23DF2*EPS
+          S23DEL=SQRT(S23DF1*S23DF2)/(2D0*X2)
+          F2=-2D0*S23DEL/EPS
+        ELSE
+          X3=X2
+          X2=X1
+          X1=R*X2+C*X0
+          F2=F1
+          S23DF1=(X1-XM(2)**2-XM(1)**2)**2
+     &    -(2D0*XM(1)*XM(2))**2
+          S23DF2=(X1-XM(3)**2-XM(5)**2)**2
+     &    -(2D0*XM(3)*XM(5))**2
+          S23DF1=S23DF1*EPS
+          S23DF2=S23DF2*EPS
+          S23DEL=SQRT(S23DF1*S23DF2)/(2D0*X1)
+          F1=-2D0*S23DEL/EPS
+        ENDIF
+        GOTO 100
+      ENDIF
+C...WE WANT THE MAXIMUM, NOT THE MINIMUM
+      IF(F1.LT.F2)THEN
+        GOLDEN=-F1
+        XMIN=X1
+      ELSE
+        GOLDEN=-F2
+        XMIN=X2
+      ENDIF
+ 
+      IKNT=0
+  110 S12=S12MIN+PYR(0)*YJACO1
+      IKNT=IKNT+1
+C...GENERATE S23
+      S23AVE=XM(2)**2+XM(3)**2-(S12+XM(2)**2-XM(1)**2)
+     &*(S12+XM(3)**2-XM(5)**2)/(2D0*S12)
+      S23DF1=(S12-XM(2)**2-XM(1)**2)**2
+     &-(2D0*XM(1)*XM(2))**2
+      S23DF2=(S12-XM(3)**2-XM(5)**2)**2
+     &-(2D0*XM(3)*XM(5))**2
+      S23DF1=S23DF1*EPS
+      S23DF2=S23DF2*EPS
+      S23DEL=SQRT(S23DF1*S23DF2)/(2D0*S12)
+      S23DEL=S23DEL/EPS
+      S23MIN=S23AVE-S23DEL
+      S23MAX=S23AVE+S23DEL
+      YJACO2=S23MAX-S23MIN
+      S23=S23MIN+PYR(0)*YJACO2
+ 
+C...CHECK THE SAMPLING
+      IF(IKNT.GT.100) THEN
+        WRITE(MSTU(11),*) ' IKNT > 100 IN PYTBDY '
+        GOTO 120
+      ENDIF
+      IF(YJACO2.LT.PYR(0)*GOLDEN) GOTO 110
+  120 D3=(XM(5)**2+XM(3)**2-S12)/(2D0*XM(5))
+      D1=(XM(5)**2+XM(1)**2-S23)/(2D0*XM(5))
+      D2=XM(5)-D1-D3
+      P1=SQRT(D1*D1-XM(1)**2)
+      P2=SQRT(D2*D2-XM(2)**2)
+      P3=SQRT(D3*D3-XM(3)**2)
+      CTHE1=2D0*PYR(0)-1D0
+      ANG1=2D0*PYR(0)*PARU(1)
+      CPHI1=COS(ANG1)
+      SPHI1=SIN(ANG1)
+      ARG=1D0-CTHE1**2
+      IF(ARG.LT.0D0.AND.ARG.GT.-1D-3) ARG=0D0
+      STHE1=SQRT(ARG)
+      P(N+1,1)=P1*STHE1*CPHI1
+      P(N+1,2)=P1*STHE1*SPHI1
+      P(N+1,3)=P1*CTHE1
+      P(N+1,4)=D1
+ 
+C...GET CPHI3
+      ANG3=2D0*PYR(0)*PARU(1)
+      CPHI3=COS(ANG3)
+      SPHI3=SIN(ANG3)
+      CTHE3=(P2**2-P1**2-P3**2)/2D0/P1/P3
+      ARG=1D0-CTHE3**2
+      IF(ARG.LT.0D0.AND.ARG.GT.-1D-3) ARG=0D0
+      STHE3=SQRT(ARG)
+      P(N+3,1)=-P3*STHE3*CPHI3*CTHE1*CPHI1
+     &+P3*STHE3*SPHI3*SPHI1
+     &+P3*CTHE3*STHE1*CPHI1
+      P(N+3,2)=-P3*STHE3*CPHI3*CTHE1*SPHI1
+     &-P3*STHE3*SPHI3*CPHI1
+     &+P3*CTHE3*STHE1*SPHI1
+      P(N+3,3)=P3*STHE3*CPHI3*STHE1
+     &+P3*CTHE3*CTHE1
+      P(N+3,4)=D3
+ 
+      DO 130 I=1,3
+        P(N+2,I)=-P(N+1,I)-P(N+3,I)
+  130 CONTINUE
+      P(N+2,4)=D2
+ 
+      RETURN
+      END

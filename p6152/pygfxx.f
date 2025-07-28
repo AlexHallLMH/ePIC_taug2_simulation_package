@@ -1,0 +1,243 @@
+ 
+C*********************************************************************
+ 
+C...PYGFXX
+C...Auxiliary routine to PYRGHM for SUSY Higgs calculations.
+ 
+      SUBROUTINE PYGFXX(XMA,TANB,XMQ,XMUR,XMDL,XMT,AT,AB,XMU,VH,
+     &STOP1,STOP2)
+ 
+C...Double precision and integer declarations.
+      IMPLICIT DOUBLE PRECISION(A-H, O-Z)
+      IMPLICIT INTEGER(I-N)
+      INTEGER PYK,PYCHGE,PYCOMP
+ 
+C...Local variables.
+      DIMENSION DIAH(2),VH(2,2),VH1(2,2),VH2(2,2),
+     &VH3T(2,2),VH3B(2,2),
+     &HMIX(2,2),AL(2,2),XM2(2,2)
+ 
+C...Statement function.
+      G(X,Y) = 2D0 - (X+Y)/(X-Y)*LOG(X/Y)
+ 
+      IF(DABS(XMU).LT.0.000001D0) XMU = 0.000001D0
+      XMQ2 = XMQ**2
+      XMUR2 = XMUR**2
+      XMDL2 = XMDL**2
+      TANBA = TANB
+      SINBA = TANBA/(TANBA**2+1D0)**0.5D0
+      COSBA = SINBA/TANBA
+ 
+      SINB = TANB/(TANB**2+1D0)**0.5D0
+      COSB = SINB/TANB
+      PI = 3.14159D0
+      G2 = (0.0336D0*4D0*PI)**0.5D0
+      G12 = (0.0101D0*4D0*PI)
+      G1 = G12**0.5D0
+      XMZ = 91.18D0
+      V = 174.1D0
+      MW = (G2**2*V**2/2D0)**0.5D0
+      ALP3 = 0.12D0/(1D0+23/12D0/PI*0.12D0*LOG(XMT**2/XMZ**2))
+ 
+      XMB = 3D0
+      IF(XMQ.GT.XMUR) XMST = XMQ
+      IF(XMUR.GT.XMQ.OR.XMUR.EQ.XMQ) XMST = XMUR
+ 
+      XMSUT = (XMST**2  + XMT**2)**0.5D0
+ 
+      IF(XMQ.GT.XMDL) XMSB = XMQ
+      IF(XMDL.GT.XMQ.OR.XMDL.EQ.XMQ) XMSB = XMDL
+ 
+      XMSUB = (XMSB**2 + XMB**2)**0.5D0
+ 
+      TT = LOG(XMSUT**2/XMT**2)
+      TB = LOG(XMSUB**2/XMT**2)
+ 
+      RXMT = XMT/(1D0+4D0*ALP3/3D0/PI)
+      HT = RXMT/(174.1D0*SINB)
+      HTST = RXMT/174.1D0
+      HB = XMB/174.1D0/COSB
+      G32 = ALP3*4D0*PI
+      BT2 = -(8D0*G32 - 9D0*HT**2/2D0 - HB**2/2D0)/(4D0*PI)**2
+      BB2 = -(8D0*G32 - 9D0*HB**2/2D0 - HT**2/2D0)/(4D0*PI)**2
+      AL2 = 3D0/8D0/PI**2*HT**2
+      BT2ST = -(8D0*G32 - 9D0*HTST**2/2D0)/(4D0*PI)**2
+      ALST = 3D0/8D0/PI**2*HTST**2
+      AL1 = 3D0/8D0/PI**2*HB**2
+ 
+      AL(1,1) = AL1
+      AL(1,2) = (AL2+AL1)/2D0
+      AL(2,1) = (AL2+AL1)/2D0
+      AL(2,2) = AL2
+ 
+      XMT4 = RXMT**4*(1D0+2D0*BT2*TT- AL2*TT)
+      XMT2 = SQRT(XMT4)
+      XMBOT4 = XMB**4*(1D0+2D0*BB2*TB - AL1*TB)
+      XMBOT2 = SQRT(XMBOT4)
+ 
+      IF(XMA.GT.XMT) THEN
+        VI = 174.1D0*(1D0 + 3D0/32D0/PI**2*HTST**2*
+     &  LOG(XMT**2/XMA**2))
+        H1I = VI* COSBA
+        H2I = VI*SINBA
+        H1T = H1I*(1D0+3D0/8D0/PI**2*HB**2*LOG(XMA**2/XMSUT**2))**0.25D0
+        H2T = H2I*(1D0+3D0/8D0/PI**2*HT**2*LOG(XMA**2/XMSUT**2))**0.25D0
+        H1B = H1I*(1D0+3D0/8D0/PI**2*HB**2*LOG(XMA**2/XMSUB**2))**0.25D0
+        H2B = H2I*(1D0+3D0/8D0/PI**2*HT**2*LOG(XMA**2/XMSUB**2))**0.25D0
+      ELSE
+        VI = 174.1D0
+        H1I = VI*COSB
+        H2I = VI*SINB
+        H1T = H1I*(1D0+3D0/8D0/PI**2*HB**2*LOG(XMT**2/XMSUT**2))**0.25D0
+        H2T = H2I*(1D0+3D0/8D0/PI**2*HT**2*LOG(XMT**2/XMSUT**2))**0.25D0
+        H1B = H1I*(1D0+3D0/8D0/PI**2*HB**2*LOG(XMT**2/XMSUB**2))**0.25D0
+        H2B = H2I*(1D0+3D0/8D0/PI**2*HT**2*LOG(XMT**2/XMSUB**2))**0.25D0
+      ENDIF
+ 
+      TANBST = H2T/H1T
+      SINBT = TANBST/(1D0+TANBST**2)**0.5D0
+      COSBT = SINBT/TANBST
+ 
+      TANBSB = H2B/H1B
+      SINBB = TANBSB/(1D0+TANBSB**2)**0.5D0
+      COSBB = SINBB/TANBSB
+ 
+      STOP12 = (XMQ2 + XMUR2)*0.5D0 + XMT2
+     &+1D0/8D0*(G2**2+G1**2)*(H1T**2-H2T**2)
+     &+(((G2**2-5D0*G1**2/3D0)/4D0*(H1T**2-H2T**2) +
+     &XMQ2 - XMUR2)**2*0.25D0 + XMT2*(AT-XMU/TANBST)**2)**0.5D0
+      STOP22 = (XMQ2 + XMUR2)*0.5D0 + XMT2
+     &+1D0/8D0*(G2**2+G1**2)*(H1T**2-H2T**2)
+     &- (((G2**2-5D0*G1**2/3D0)/4D0*(H1T**2-H2T**2) +
+     &XMQ2 - XMUR2)**2*0.25D0
+     &+ XMT2*(AT-XMU/TANBST)**2)**0.5D0
+      IF(STOP22.LT.0D0) GOTO 120
+      SBOT12 = (XMQ2 + XMDL2)*0.5D0
+     &- 1D0/8D0*(G2**2+G1**2)*(H1B**2-H2B**2)
+     &+ (((G1**2/3D0-G2**2)/4D0*(H1B**2-H2B**2) +
+     &XMQ2 - XMDL2)**2*0.25D0 + XMBOT2*(AB-XMU*TANBSB)**2)**0.5D0
+      SBOT22 = (XMQ2 + XMDL2)*0.5D0
+     &- 1D0/8D0*(G2**2+G1**2)*(H1B**2-H2B**2)
+     &- (((G1**2/3D0-G2**2)/4D0*(H1B**2-H2B**2) +
+     &XMQ2 - XMDL2)**2*0.25D0 + XMBOT2*(AB-XMU*TANBSB)**2)**0.5D0
+      IF(SBOT22.LT.0D0) GOTO 120
+ 
+      STOP1 = STOP12**0.5D0
+      STOP2 = STOP22**0.5D0
+      SBOT1 = SBOT12**0.5D0
+      SBOT2 = SBOT22**0.5D0
+ 
+      VH1(1,1) = 1D0/TANBST
+      VH1(2,1) = -1D0
+      VH1(1,2) = -1D0
+      VH1(2,2) = TANBST
+      VH2(1,1) = TANBST
+      VH2(1,2) = -1D0
+      VH2(2,1) = -1D0
+      VH2(2,2) = 1D0/TANBST
+ 
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+C...D-TERMS
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+      STW=0.2320D0
+ 
+      F1T=(XMQ2-XMUR2)/(STOP12-STOP22)*(0.5D0-4D0/3D0*STW)*
+     &LOG(STOP1/STOP2)
+     &+(0.5D0-2D0/3D0*STW)*LOG(STOP1*STOP2/(XMQ2+XMT2))
+     &+ 2D0/3D0*STW*LOG(STOP1*STOP2/(XMUR2+XMT2))
+ 
+      F1B=(XMQ2-XMDL2)/(SBOT12-SBOT22)*(-0.5D0+2D0/3D0*STW)*
+     &LOG(SBOT1/SBOT2)
+     &+(-0.5D0+1D0/3D0*STW)*LOG(SBOT1*SBOT2/(XMQ2+XMBOT2))
+     &- 1D0/3D0*STW*LOG(SBOT1*SBOT2/(XMDL2+XMBOT2))
+ 
+      F2T=XMT2**0.5D0*(AT-XMU/TANBST)/(STOP12-STOP22)*
+     &(-0.5D0*LOG(STOP12/STOP22)
+     &+(4D0/3D0*STW-0.5D0)*(XMQ2-XMUR2)/(STOP12-STOP22)*
+     &G(STOP12,STOP22))
+ 
+      F2B=XMBOT2**0.5D0*(AB-XMU*TANBSB)/(SBOT12-SBOT22)*
+     &(0.5D0*LOG(SBOT12/SBOT22)
+     &+(-2D0/3D0*STW+0.5D0)*(XMQ2-XMDL2)/(SBOT12-SBOT22)*
+     &G(SBOT12,SBOT22))
+ 
+      VH3B(1,1) = XMBOT4/(COSBB**2)*(LOG(SBOT1**2*SBOT2**2/
+     &(XMQ2+XMBOT2)/(XMDL2+XMBOT2))
+     &+ 2D0*(AB*(AB-XMU*TANBSB)/(SBOT1**2-SBOT2**2))*
+     &LOG(SBOT1**2/SBOT2**2)) +
+     &XMBOT4/(COSBB**2)*(AB*(AB-XMU*TANBSB)/
+     &(SBOT1**2-SBOT2**2))**2*G(SBOT12,SBOT22)
+ 
+      VH3T(1,1) =
+     &XMT4/(SINBT**2)*(XMU*(-AT+XMU/TANBST)/(STOP1**2
+     &-STOP2**2))**2*G(STOP12,STOP22)
+ 
+      VH3B(1,1)=VH3B(1,1)+
+     &XMZ**2*(2*XMBOT2*F1B-XMBOT2**0.5D0*AB*F2B)
+ 
+      VH3T(1,1) = VH3T(1,1) +
+     &XMZ**2*(XMT2**0.5D0*XMU/TANBST*F2T)
+ 
+      VH3T(2,2) = XMT4/(SINBT**2)*(LOG(STOP1**2*STOP2**2/
+     &(XMQ2+XMT2)/(XMUR2+XMT2))
+     &+ 2D0*(AT*(AT-XMU/TANBST)/(STOP1**2-STOP2**2))*
+     &LOG(STOP1**2/STOP2**2)) +
+     &XMT4/(SINBT**2)*(AT*(AT-XMU/TANBST)/
+     &(STOP1**2-STOP2**2))**2*G(STOP12,STOP22)
+ 
+      VH3B(2,2) =
+     &XMBOT4/(COSBB**2)*(XMU*(-AB+XMU*TANBSB)/(SBOT1**2
+     &-SBOT2**2))**2*G(SBOT12,SBOT22)
+ 
+      VH3T(2,2)=VH3T(2,2)+
+     &XMZ**2*(-2*XMT2*F1T+XMT2**0.5D0*AT*F2T)
+ 
+      VH3B(2,2) = VH3B(2,2) -XMZ**2*XMBOT2**0.5D0*XMU*TANBSB*F2B
+ 
+      VH3T(1,2) = -
+     &XMT4/(SINBT**2)*XMU*(AT-XMU/TANBST)/
+     &(STOP1**2-STOP2**2)*(LOG(STOP1**2/STOP2**2) + AT*
+     &(AT - XMU/TANBST)/(STOP1**2-STOP2**2)*G(STOP12,STOP22))
+ 
+      VH3B(1,2) =
+     &- XMBOT4/(COSBB**2)*XMU*(AT-XMU*TANBSB)/
+     &(SBOT1**2-SBOT2**2)*(LOG(SBOT1**2/SBOT2**2) + AB*
+     &(AB - XMU*TANBSB)/(SBOT1**2-SBOT2**2)*G(SBOT12,SBOT22))
+ 
+      VH3T(1,2)=VH3T(1,2) +
+     &XMZ**2*(XMT2/TANBST*F1T-XMT2**0.5D0*(AT/TANBST+XMU)/2D0*F2T)
+ 
+      VH3B(1,2)=VH3B(1,2)
+     &+XMZ**2*(-XMBOT2*TANBSB*F1B+XMBOT2**0.5D0*(AB*TANBSB+XMU)/2D0*F2B)
+ 
+      VH3T(2,1) = VH3T(1,2)
+      VH3B(2,1) = VH3B(1,2)
+ 
+      TQ = LOG((XMQ2 + XMT2)/XMT2)
+      TU = LOG((XMUR2+XMT2)/XMT2)
+      TQD = LOG((XMQ2 + XMB**2)/XMB**2)
+      TD = LOG((XMDL2+XMB**2)/XMB**2)
+ 
+      DO 110 I = 1,2
+        DO 100 J = 1,2
+ 
+          VH(I,J) =
+     &    6D0/(8D0*PI**2*(H1T**2+H2T**2))
+     &    *VH3T(I,J)*0.5D0*(1D0-AL(I,J)*TT/2D0) +
+     &    6D0/(8D0*PI**2*(H1B**2+H2B**2))
+     &    *VH3B(I,J)*0.5D0*(1D0-AL(I,J)*TB/2D0)
+ 
+  100   CONTINUE
+  110 CONTINUE
+ 
+      GOTO 150
+  120 DO 140 I =1,2
+        DO 130 J = 1,2
+          VH(I,J) = -1D+15
+  130   CONTINUE
+  140 CONTINUE
+ 
+  150 CONTINUE
+ 
+      RETURN
+      END

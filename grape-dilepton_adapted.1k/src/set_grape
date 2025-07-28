@@ -1,0 +1,38 @@
+# --- for SunOS ---
+setenv  F77      gfortran
+setenv  FFLAGS  '-O -g -fno-automatic -std=legacy  '
+setenv  gplpl g++
+#
+# --- for SGI ---
+# setenv  F77      f77
+# setenv  FFLAGS  '-O -extend_source -Wl,-u -Wl,pydata_'
+#
+# --- for PC-Linux ---
+# setenv  F77      g77
+# setenv  FFLAGS  '-O -ffixed-line-length-132 -Wl,-u -Wl,pydata_'
+#
+# --- for HP ---
+# setenv  F77      f77
+# setenv  FFLAGS  '-O +es'
+#
+# --- for AIX ---
+# setenv  F77      xlf
+# setenv  FFLAGS  '-O -qstrict -qextname -qfixed=100'
+#=======================================
+
+#(Path to CERNLIB)
+setenv  USRLDIR    "-L/network/software/el9/cernlib/2006a/new/lib"
+
+setenv  SYSLIB     "-L/home/lady6801/Documents/new/p6152"
+#(The following options might be needed for SunOS.)
+#setenv  SYSLIB     "-lnsl -lm -lc"
+
+setenv  USRLIB     "-lkernlib -lpdflib804 -lmathlib -lpacklib -lpythia6427  ${SYSLIB} "
+
+#=======================================
+setenv  GRACELDIR  "../lib"
+
+#=======================================
+source ./set_grape.usrobj
+
+#(EOF)

@@ -1,0 +1,13 @@
+obj1='kinit_4f.o     kinem_4f.o     kfill_4f.o'
+obj2=' '
+obj3=' '
+obj4='smintv.o stpxv.o spstr4.o spput4.o  py_proc_def.o pyupev.o'
+obj5='read_cards.o routines_usr.o www.o brasse.o allm.o alpha_run.o'
+obj6='nt_make.o  rnd_stat.o random.o'
+obj7='get_proc.o get_graph_flag.o  pyrand.o pystat.o usrstr.o'
+obj8='agcpol.o'
+obj9='run_sophia.o eventgen.o jetset74dp.o'
+objA=' '
+export  USROBJ1="${obj1} ${obj2} ${obj3} ${obj4} ${obj5} ${obj6}"
+export  USROBJ2="${obj7} ${obj8} ${obj9} ${objA}"
+export  USROBJ="${USROBJ1} ${USROBJ2}"

@@ -1,0 +1,18 @@
+This directory includes programs:
+-- # table-parsing-test.cxx   Tests if tables are parsed correctly.
+                              Should be executed with new tables to check if
+                              they are correct.
+			      Calculation  of electroweak formfactors 
+			      and effective Born for some energy and cos_theta
+			      ranges, output is of root format.
+
+-- # FFdraw.C		      Root script for graphical representation of
+     			      table-parsing-test.cxx results
+-- # FFdrawDwa.C	      Root script for graphical representation of diff.
+     			      for results of two table-parsing-test.cxx runs
+-- # table.down		      Pretabulated electroweak corrections from
+     table.up		      KKMC electroweak library, for details see KKMC
+     table.mu		      documentation: Comput.Phys.Commun. 130 (2000) 260
+                              WARNING: user is expected to make his choice for
+			      table initialization setup.
+                              
