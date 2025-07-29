@@ -29,9 +29,10 @@ csh
 chmod +x build_hep.sh
 ./build_hep.sh
 ```
+- This step may take some time but only needs to be done once.
 
 ### Build GRAPE
-First, go into grape-dilepton_adapted.1k/src/set_grape_spring and change the file paths so they point to the same files in *your* directory! Then:
+First, go into grape-dilepton_adapted.1k/src/set_grape_spring and change the file paths so they point to the same files in *your* directory (I will automate this down the line)! Then:
 ```bash
 chmod +x build.sh
 ./build.sh
@@ -42,7 +43,6 @@ chmod +x build.sh
   ./grape-dilepton/build
   ```
 
-- This step may take some time but only needs to be done once.
 
 ---
 
