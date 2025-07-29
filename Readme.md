@@ -23,8 +23,15 @@ csh
 
 ## Step 1: Compile the Programs
 
-### Build GRAPE
+### Build HEPMC3 and TAUOLA
 
+```bash
+chmod +x build_hep.sh
+./build_hep.sh
+```
+
+### Build GRAPE
+First, go into grape-dilepton_adapted.1k/src/set_grape_spring and change the file paths so they point to the same files in *your* directory! Then:
 ```bash
 chmod +x build.sh
 ./build.sh
@@ -34,13 +41,6 @@ chmod +x build.sh
   ```
   ./grape-dilepton/build
   ```
-
-### Build HEPMC3 and TAUOLA
-
-```bash
-chmod +x build_hep.sh
-./build_hep.sh
-```
 
 - This step may take some time but only needs to be done once.
 
