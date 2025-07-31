@@ -1,3 +1,5 @@
+#Cleans the HEPMC file, fixes events, and cleans again
+
 import re
 import subprocess
 import pyhepmc

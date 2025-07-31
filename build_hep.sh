@@ -25,7 +25,7 @@ cd ../..
 
 
 #Compile Tauola
-#ls
-#cd TAUOLA.1.1.8-LHC/TAUOLA
-#make clean
-#./configure --with-hepmc3=../../HepMC3-3.2.6
+ls
+cd TAUOLA.1.1.8-LHC/TAUOLA
+make clean
+./configure --with-hepmc3=../../HepMC3-3.2.6
