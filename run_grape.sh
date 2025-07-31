@@ -11,5 +11,5 @@ setenv LD_LIBRARY_PATH ../../HepMC3-3.2.6/build/outputs/lib64
 ./spring
 
 #Remove Unneeded outputs
-rm bases.rz
-rm grp.rz
+#rm bases.rz
+#rm grp.rz
