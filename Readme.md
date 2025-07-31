@@ -5,8 +5,8 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
-cd <repository-directory>
+git clone https://github.com/AlexHallLMH/ePIC_taug2_simulation_package.git
+cd ePIC_taug2_simulation_package.git
 ```
 
 **Note:** All commands below should be run from within the main directory of the repository.
@@ -40,7 +40,7 @@ chmod +x build.sh
 
 - GRAPE executables will be located in:
   ```
-  ./grape-dilepton/build
+  ./grape-dilepton_adapted.1k/build
   ```
 
 
@@ -48,7 +48,7 @@ chmod +x build.sh
 
 ## Step 2: Run GRAPE
 
-1. Edit the `grape.cards` file to configure run parameters.
+1. Edit the `grape.cards` file to configure run parameters (the default is set up well for ePIC)
 
 2. Run GRAPE:
 
@@ -73,5 +73,5 @@ chmod +x run_tauola.sh
 - Output is printed to the terminal.
 - Partially processed files will be found in:
   ```
-  ./grape/build
+  ./grape-dilepton_adapted.1k/build
   ```
