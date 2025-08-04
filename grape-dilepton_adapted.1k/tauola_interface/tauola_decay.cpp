@@ -23,8 +23,12 @@ int main() {
 
     GenEvent evt(Units::GEV, Units::CM);
 
-    // Read and process events until EOF
-    while (reader.read_event(evt)) {
+    // Read and process events until EOF or failure
+    while (!reader.failed()) {
+        reader.read_event(evt);
+        if (reader.failed()) break;
+        if (evt.particles().empty()) break;
+
         cout << "BEFORE TAU DECAYS:" << endl;
         Print::listing(evt);
 

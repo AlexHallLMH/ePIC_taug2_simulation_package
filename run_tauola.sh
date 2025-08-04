@@ -2,17 +2,17 @@
 
 cd grape-dilepton_adapted.1k/build
 
-cp ../tauola_interface/fixmk5.py .
+cp ../tauola_interface/clean.py .
 cp ../tauola_interface/reader_tester.py .
 
 #Duplicate the original output, to leave the initial output untouched
 cp Grape.hepmc Grape_dup.hepmc
 
 #Run Cleaning script (fixes corrupted file issues and )
-python3 fixmk5.py
+python3 clean.py
 
 #Remove redundant files
-rm fixmk5.py
+rm clean.py
 rm reader_tester.py
 rm Grape_dup.hepmc
 rm Grape_temp.hepmc
@@ -24,3 +24,8 @@ rm tauola_decay.cpp
 
 setenv LD_LIBRARY_PATH ../../TAUOLA.1.1.8-LHC/TAUOLA/lib:$LD_LIBRARY_PATH
 ./tauola_decay
+
+#Tidies final version ready for TauSpinner
+cp ../tauola_interface/tidy.py .
+python3 tidy.py
+rm tidy.py

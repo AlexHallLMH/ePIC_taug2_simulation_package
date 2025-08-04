@@ -507,8 +507,9 @@ OBJA    = $(OBJAep_epee) $(OBJAep_epmm) $(OBJAep_eptt)\
             $(OBJAet_etee) $(OBJAet_etmm) $(OBJAet_ettt)\
             $(OBJAetb_etbee) $(OBJAetb_etbmm) $(OBJAetb_etbtt)
 OBJF      = userin.o setmas.o amparm.o usrprm.o modmas.o\
-            stffv.o stffs.o stppv.o ~/Documents/new/grape-dilepton_adapted.1k/src/Pythia6ToHepMC3.cc.o
+            stffv.o stffs.o stppv.o ../src/Pythia6ToHepMC3.cc.o
 
+ 
 OBJU      = func.o usrout.o amclr.o\
             amkfcd.o gfinit.o akptbl.o snprpd.o
 
