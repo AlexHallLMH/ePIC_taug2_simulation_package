@@ -1,4 +1,4 @@
-#UPCGEN and Pythia8 installation Guide
+# UPCGEN and Pythia8 installation Guide
 
 1. Run: chmod +x install.sh
 2. Run ./install.sh
